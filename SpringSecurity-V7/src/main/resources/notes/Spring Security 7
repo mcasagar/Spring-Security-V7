@@ -42,4 +42,20 @@ For example:
 	-	A powerful filter chain
 	-	Built-in authentication mechanisms
 	-	Simple ways to define user roles and permisions.
+	
+* Starts with Integrating Spring Security in Spring Boot App
+================================================
+1. Add Dependencies
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+ - Once you add the Spring Security dependency to your project, simply run the Spring Boot application.
+ - Spring Security will automatically provide a default login form for your application.
+ - To log in, use the default username and the password that Spring Security automatically generates. The generated password will be displayed in the **application console**.
+
+ - Default Username: user
+ - Generated Password: `5395812f-4398-4a15-82a0-ba1b10f41b3d`
 
