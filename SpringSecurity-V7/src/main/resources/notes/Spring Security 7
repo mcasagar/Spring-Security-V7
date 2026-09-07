@@ -2,3 +2,44 @@ What is Spring Security ?
 =====================
 - Spring Security is the framewokr That protects the spring applications.
 - It provides authentication, authorization, and many security features out of the box.
+
+If you are trying to build a secure applications without spring security, you would need to manually handle…
+	•	Core logic
+		-	Write filters
+		-	Handle sessions
+		-	Create password validations
+		-	Protects against common attacts
+	•	Essentials Features
+		-	Manage Login & Loguout
+		-	Implement hashing 
+		-	Configure CORS & CSRF
+		-	Validate Requests
+
+Main challenges
+====================
+* Authentication
+	- You need to verify username/password yourself.
+	- You must decide how to store and compare passwords securely.
+	- Passwords should never be stored as plain text.
+* Password security
+	- You need proper hashing such as BCrypt/Argon2.
+ 	- You need to handle password changes, resets, failed login attempts, etc.
+* Session management
+	- After login, how do you remember that the user is authenticated?
+	- You need to create, maintain, expire, and invalidate sessions securely.
+
+* Authorization
+	- Authentication answers “Who are you?”
+	- Authorization answers “What are you allowed to do?”
+
+For example:
+
+	ADMIN → can delete users
+	USER  → cannot delete users
+	
+•	Spring Security solves this problem by giving you a complete, well-tested security architecture. 
+ It comes with:
+	-	A powerful filter chain
+	-	Built-in authentication mechanisms
+	-	Simple ways to define user roles and permisions.
+
