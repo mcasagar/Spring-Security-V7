@@ -58,4 +58,17 @@ For example:
 
  - Default Username: user
  - Generated Password: `5395812f-4398-4a15-82a0-ba1b10f41b3d`
-
+ - Spring Security provides default /login  api  & /logout  api
+ - Example: http://localhost:8080/api/login
+ 
+ Different between Authentication & Authorization
+ ========================================
+ Authentication:
+ 	- Who are you
+ 	- It will ask identity
+ 	- Generally we are using for login
+ 	- Happens once at login
+ Authorization:
+ 	- What you can do?
+ 	- It will verifies access (that means what you can access in applications)
+	- Happens on every request.
