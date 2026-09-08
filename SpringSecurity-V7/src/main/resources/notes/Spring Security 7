@@ -72,3 +72,22 @@ For example:
  	- What you can do?
  	- It will verifies access (that means what you can access in applications)
 	- Happens on every request.
+	
+Now, you may have a question:
+===========================
+ - Can we customize the default username and password provided by Spring Security?
+ - Ans: Yes. Spring Boot provides properties that we can use to customize the default username and password.
+ - When we add the Spring Security dependency and run the application, Spring Boot creates a default user. The default username is user, and a randomly generated password is displayed in the console.
+ - The default security user configuration is represented by Spring Boot's SecurityProperties class. SecurityProperties is annotated with @ConfigurationProperties("spring.security").
+    Inside SecurityProperties, there is a nested User class. The User class contains properties such as name and password. Because these properties are mapped using the 
+    spring.security prefix, we can customize them in our application.properties file.
+
+	For example:
+	------------------
+	- spring.security.user.name=sagar
+    - spring.security.user.password=321
+
+	Now, instead of the default username user, we can log in using:
+
+	Username: sagar
+	Password: 321
