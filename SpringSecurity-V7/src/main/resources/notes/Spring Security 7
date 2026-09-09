@@ -91,3 +91,133 @@ Now, you may have a question:
 
 	Username: sagar
 	Password: 321
+
+You can test api using Postman
+==========================
+ - add new request 
+ - select http type and type url
+ - click on Authorization tab select basic auth
+ - type username and password and sent the request
+ 
+ - So whenever you have requirement to secure you web application using login page then you can go and use HTTP basic authentication.
+   and whenever you have an RestAPIs in your backend application and you want to expose those REST API's to the client. for example mobile application
+   or you know any other application that consumes the rest apis the you can use basic authentication or token bases authentications.  
+   
+
+Spring Security Internal Flow (Default Behavior)
+==============================================
+ - When a user enters their username and password in the login form and clicks the Sign In button, the login request is sent to the server.
+    The request then passes through the Spring Security Filter Chain.
+ - Step 1: Request enters the Filter Chain
+		The incoming HTTP request first goes through the Spring Security Filter Chain.
+		The filter chain contains multiple security filters that are responsible for handling different security-related tasks.
+		For username/password authentication, the important filter is: 
+									UsernamePasswordAuthenticationFilter
+ - Step 2: UsernamePasswordAuthenticationFilter
+		UsernamePasswordAuthenticationFilter intercepts the login request and extracts the username and password from the request.
+		It then creates a special object called:
+									UsernamePasswordAuthenticationToken
+		This token contains the credentials provided by the user.
+		For example:
+				Username: sagar
+				Password: 321
+		The token can be thought of as:
+		UsernamePasswordAuthenticationToken
+        	|
+        	|-- Username: sagar
+        	|-- Password: 321
+		Step 3: AuthenticationManager
+		The UsernamePasswordAuthenticationFilter passes this authentication token to the:
+									AuthenticationManager
+		The AuthenticationManager is responsible for performing the actual authentication.
+									UsernamePasswordAuthenticationFilter
+                		|
+                		| Authentication Token
+                		↓
+       					AuthenticationManager
+		Step 4: AuthenticationProvider
+		The AuthenticationManager delegates the authentication process to an appropriate:
+									AuthenticationProvider
+		For username/password authentication, a commonly used provider is:
+									DaoAuthenticationProvider
+		DaoAuthenticationProvider uses a UserDetailsService to load the user's information.
+		AuthenticationManager
+        	|
+        	↓
+		DaoAuthenticationProvider
+        	|
+        	↓
+		UserDetailsService
+ - Step 5: UserDetailsService
+	UserDetailsService loads the user details using the username.
+	For example, if the username is:
+		sagar
+	UserDetailsService searches for that user in the configured user source.
+	That user source could be:
+		•	In-memory users
+		•	Database
+		•	LDAP
+		•	Custom user store
+	For a simple Spring Security setup, Spring Boot can create an in-memory user using the configured properties.
+ - Step 6: Password Verification
+	After loading the user details, Spring Security compares the password provided by the user with the stored password.
+	The comparison is normally performed using a:
+							PasswordEncoder
+	For example:
+		Entered Password
+	       ↓
+		PasswordEncoder
+       		↓
+		Compare with stored password
+		If the credentials are valid:
+		Authentication SUCCESS
+		If the credentials are invalid:
+		Authentication FAILURE
+ - Step 7: Authentication Object is Returned
+	If authentication is successful, the AuthenticationProvider returns a fully authenticated Authentication object.
+	This object contains information about the authenticated user, such as:
+	Username
+	Authorities / Roles
+	Authentication status
+ - Step 8: SecurityContext
+	The authenticated Authentication object is stored in the:
+										SecurityContext
+	The SecurityContext represents the security information of the current request.
+	Conceptually:
+	SecurityContext
+      |
+     └── Authentication
+              	|
+              	├── Principal (User)
+              	└── Authorities / Roles
+	This allows the application to know:
+	"Who is the currently authenticated user?"
+ - Step 9: Request continues
+	After successful authentication, the request continues through the remaining security filters and eventually reaches the controller.
+	User
+ 	↓
+	Login Form
+ 	↓
+	HTTP Request
+ 	↓
+	Security Filter Chain
+ 	↓
+	UsernamePasswordAuthenticationFilter
+ 	↓
+	UsernamePasswordAuthenticationToken
+ 	↓
+	AuthenticationManager
+ 	↓
+	AuthenticationProvider
+ 	↓
+	UserDetailsService
+ 	↓
+	PasswordEncoder
+ 	↓
+	Authentication SUCCESS
+ 	↓
+	SecurityContext
+ 	↓
+	Controller
+	If authentication fails, the request does not proceed normally to the protected resource. Spring Security handles the authentication failure, typically returning the user to the login flow with an authentication error.
+   
