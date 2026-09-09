@@ -230,5 +230,15 @@ Spring Security Internal Flow (Default Behavior)
    override this SecurityFilterChain and customize as per our requirements.
 
 - To expose all method publicly then we are using permitAll() method
+
+`requestMatchers()` with `HttpMethod.GET`
+===================================
+ .requestMatchers(HttpMethod.GET, "/api/user", "/api/admin").authenticated()
+ - This rule applies only to GET requests for the `/api/user` and `/api/admin` endpoints.
+ -  `HttpMethod.GET` → Matches only GET requests.
+ - `"/api/user", "/api/admin"` → Specifies the URL patterns to match.
+ - `.authenticated()` → The user must be authenticated to access these endpoints.
+ - It does not check for a specific role. Any authenticated user can access these endpoints.
+
     
    
