@@ -221,3 +221,14 @@ Spring Security Internal Flow (Default Behavior)
 	Controller
 	If authentication fails, the request does not proceed normally to the protected resource. Spring Security handles the authentication failure, typically returning the user to the login flow with an authentication error.
    
+ -  ServletWebSecurityAutoConfiguration is a Spring Boot auto-configuration class that configures the default web security setup for Servlet-based applications.
+    Inside it, SecurityFilterChainConfiguration provides the default SecurityFilterChain, where Spring Security configures anyRequest().authenticated(), form login, and HTTP Basic authentication by default.
+    If we define our own SecurityFilterChain bean, Spring Boot's default security configuration backs off and our custom configuration is used.
+    
+ - If you want to customize default configurations.
+   Suppose we want to use form based authentications and don’t want to use the httpBasic authentications then what we can do is we 
+   override this SecurityFilterChain and customize as per our requirements.
+
+- To expose all method publicly then we are using permitAll() method
+    
+   
