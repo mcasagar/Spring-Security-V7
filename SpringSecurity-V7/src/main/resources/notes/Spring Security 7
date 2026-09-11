@@ -239,6 +239,19 @@ Spring Security Internal Flow (Default Behavior)
  - `"/api/user", "/api/admin"` → Specifies the URL patterns to match.
  - `.authenticated()` → The user must be authenticated to access these endpoints.
  - It does not check for a specific role. Any authenticated user can access these endpoints.
+ 
+ requestMatchers() with permitAll()
+ ===========================
+	- .requestMatchers(HttpMethod.GET, "/api/welcome")
+	- .permitAll()
+			This rule allows everyone to access the /api/welcome endpoint using a GET request, without authentication.
+			•	HttpMethod.GET → Matches only GET requests.
+			•	"/api/welcome" → Specifies the URL pattern to match.
+			•	.permitAll() → Allows access to everyone, including unauthenticated users.
+ 
+ 
+ 
+ 
 
     
    

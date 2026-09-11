@@ -17,6 +17,7 @@ public class SpringSecurityConfig {
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
 		http.authorizeHttpRequests((requests) -> requests
 					.requestMatchers(HttpMethod.GET, "/api/user", "/api/admin").authenticated()
+					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll() 		// any user can able to access /welcome api without authentications.
 				);	
 		http.formLogin(withDefaults());
 		http.httpBasic(withDefaults());
