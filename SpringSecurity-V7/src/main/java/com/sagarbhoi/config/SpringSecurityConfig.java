@@ -19,8 +19,8 @@ public class SpringSecurityConfig {
 					.requestMatchers(HttpMethod.GET, "/api/user", "/api/admin").authenticated()
 					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll() 		// any user can able to access /welcome api without authentications.
 				);	
-		http.formLogin(withDefaults());
-		http.httpBasic(basic -> basic.disable());
+		http.formLogin(form -> form.disable());	// disabled form base authentications
+		http.httpBasic(withDefaults());
 		return http.build();
 	}
 }
