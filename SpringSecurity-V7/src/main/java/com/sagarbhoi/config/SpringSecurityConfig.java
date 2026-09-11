@@ -20,7 +20,7 @@ public class SpringSecurityConfig {
 					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll() 		// any user can able to access /welcome api without authentications.
 				);	
 		http.formLogin(withDefaults());
-		http.httpBasic(withDefaults());
+		http.httpBasic(basic -> basic.disable());
 		return http.build();
 	}
 }

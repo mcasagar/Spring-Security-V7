@@ -249,9 +249,16 @@ Spring Security Internal Flow (Default Behavior)
 			•	"/api/welcome" → Specifies the URL pattern to match.
 			•	.permitAll() → Allows access to everyone, including unauthenticated users.
  
+Form-Based Authentication vs HTTP Basic Authentication
+==============================================
+1. Form-Based Authentication
+	Use form-based authentication when the application has a web UI where users log in through a login page.
+	http.formLogin(withDefaults());
  
- 
- 
-
-    
+2. HTTP Basic Authentication
+	Use HTTP Basic Authentication mainly when a client needs to authenticate with the server using a simple username and password sent through the HTTP Authorization header.
+	http.httpBasic(withDefaults());
+   
+- To disable basic authentications
+  http.httpBasic(basic -> basic.disable());
    
