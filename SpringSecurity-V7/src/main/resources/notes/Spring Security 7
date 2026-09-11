@@ -261,4 +261,10 @@ Form-Based Authentication vs HTTP Basic Authentication
    
 - To disable basic authentications
   http.httpBasic(basic -> basic.disable());
+  
+ - Earlier, I configured a single user manually through the application.properties file. Now, I want to configure multiple users along with their assigned roles using InMemoryUserDetailsManager.
+ - InMemoryUserDetailsManager is an implementation of UserDetailsService that allows us to store user credentials and authorities directly in application memory. It provides a simple programmatic 
+ - way to define and manage multi-user authentication during development.
+  
+  
    
