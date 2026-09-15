@@ -285,5 +285,53 @@ Role Based Authorization
 
 	.requestMatchers("/api/user").hasAnyRole("ADMIN", "USER")
 	Users with either `ADMIN` or `USER` role can access the API.
+	
+Method Level Security 
+====================================
+ - Role-Based Authorization Using Method-Level Security in REST APIs
+ - Instead of configuring role-based authorization in the SecurityFilterChain, we can configure authorization directly on top of REST API methods using method-level security.
+ - To enable method-level security, we need to add the @EnableMethodSecurity annotation to our Spring Security configuration class.
+
+	@Configuration
+	@EnableMethodSecurity
+	public class SecurityConfig {
+	    // Security configuration
+	}
+
+ - After enabling method-level security, we can use annotations such as @PreAuthorize on our REST API methods.
+
+	Example
+	@GetMapping("/admin")
+	@PreAuthorize("hasRole('ADMIN')")
+	public String admin() {
+	    return "Admin Information";
+	}
+
+ - Here, only users with the ADMIN role can access the /admin API.
+
+	@GetMapping("/user")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	public String user() {
+	    return "User Information";
+	}
+
+ - Here, users with either the USER or ADMIN role can access the /user API.
+
+ - Key Point
+	With method-level security, authorization rules are defined directly at the method level, instead of defining every authorization rule inside the SecurityFilterChain.
+	
+
+	1. @PreAuthorize
+	---------------------------------
+	@PreAuthorize checks authorization before the method is executed.
+	It is used when we want to check whether the authenticated user has the required role or authority before allowing the method to execute.
+	
+	2. @PostAuthorize
+	---------------------------------
+	@PostAuthorize checks authorization after the method has executed.
+	It is useful when the authorization decision depends on the object returned by the method.
   
+  	3. @Secured
+  	----------------------------------
+ 	@Secured is used for simple role/authority-based authorization at the method level.
    

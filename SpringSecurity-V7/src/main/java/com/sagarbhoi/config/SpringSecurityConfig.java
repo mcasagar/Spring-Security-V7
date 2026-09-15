@@ -5,6 +5,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SpringSecurityConfig {
 	
 	@Bean
@@ -29,8 +31,8 @@ public class SpringSecurityConfig {
 //					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll() 		// any user can able to access /welcome api without authentications.
 					
 					// Role Base Authorizations
-					.requestMatchers(HttpMethod.GET, "/api/user").hasAnyRole("ADMIN", "USER")  // here both admin & user can access /user api
-					.requestMatchers(HttpMethod.GET, "/api/admin").hasRole("ADMIN")					   // here only admin can access /admin api
+//					.requestMatchers(HttpMethod.GET, "/api/user").hasAnyRole("ADMIN", "USER")  // here both admin & user can access /user api
+//					.requestMatchers(HttpMethod.GET, "/api/admin").hasRole("ADMIN")					   // here only admin can access /admin api
 					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll()							  // here /welcome api can access anyone.
 					.anyRequest().authenticated()																				     // other than above api, every request will check credentials
 				);	
