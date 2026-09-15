@@ -334,4 +334,10 @@ Method Level Security
   	3. @Secured
   	----------------------------------
  	@Secured is used for simple role/authority-based authorization at the method level.
+ 	
+ 	
+ 	
+ 	Database Authentications.
+ 	=======================
+ 	1. Establish connection with mysql database
    
