@@ -266,5 +266,24 @@ Form-Based Authentication vs HTTP Basic Authentication
  - InMemoryUserDetailsManager is an implementation of UserDetailsService that allows us to store user credentials and authorities directly in application memory. It provides a simple programmatic 
  - way to define and manage multi-user authentication during development.
   
+Role Based Authorization
+=======================
+ - In Spring Security, we use role-based authorization to restrict access to REST APIs based on the user's role.
+ - If we want to allow access to users with a single specific role, we use:
+
+    hasRole()
+
+ - If we want to allow access to users with multiple possible roles, we use:
+
+    hasAnyRole()
+
+
+**Example:**
+
+	.requestMatchers("/api/admin").hasRole("ADMIN")
+	Only users with the `ADMIN` role can access the API.
+
+	.requestMatchers("/api/user").hasAnyRole("ADMIN", "USER")
+	Users with either `ADMIN` or `USER` role can access the API.
   
    

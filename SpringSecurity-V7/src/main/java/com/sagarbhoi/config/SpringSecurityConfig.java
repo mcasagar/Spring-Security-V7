@@ -23,11 +23,18 @@ public class SpringSecurityConfig {
 	}
 	
 	@Bean
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
+	SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 		http.authorizeHttpRequests((requests) -> requests
-					.requestMatchers(HttpMethod.GET, "/api/user", "/api/admin").authenticated()
-					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll() 		// any user can able to access /welcome api without authentications.
+//					.requestMatchers(HttpMethod.GET, "/api/user", "/api/admin").authenticated()
+//					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll() 		// any user can able to access /welcome api without authentications.
+					
+					// Role Base Authorizations
+					.requestMatchers(HttpMethod.GET, "/api/user").hasAnyRole("ADMIN", "USER")  // here both admin & user can access /user api
+					.requestMatchers(HttpMethod.GET, "/api/admin").hasRole("ADMIN")					   // here only admin can access /admin api
+					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll()							  // here /welcome api can access anyone.
+					.anyRequest().authenticated()																				     // other than above api, every request will check credentials
 				);	
+		
 		http.formLogin(form -> form.disable());	// disabled form base authentications
 		http.httpBasic(withDefaults());
 		return http.build();
