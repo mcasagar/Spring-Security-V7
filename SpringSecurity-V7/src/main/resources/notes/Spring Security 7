@@ -340,4 +340,5 @@ Method Level Security
  	Database Authentications.
  	=======================
  	1. Establish connection with mysql database
+ 	2. Creates User Entity & Role Entity with ManyToMany relationship (user can have multiple roles)
    
