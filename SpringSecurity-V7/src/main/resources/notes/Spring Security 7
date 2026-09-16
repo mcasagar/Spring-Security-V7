@@ -341,4 +341,9 @@ Method Level Security
  	=======================
  	1. Establish connection with mysql database
  	2. Creates User Entity & Role Entity with ManyToMany relationship (user can have multiple roles)
+ 	
+ 	
+ 	- Now onwards we are using Custom User Details Service to load users from our database not from the InMemory.
+ ==============================================================================================
+ 
    

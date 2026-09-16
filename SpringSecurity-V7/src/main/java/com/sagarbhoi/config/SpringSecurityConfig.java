@@ -5,6 +5,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +20,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity
 public class SpringSecurityConfig {
+	
+	private UserDetailsService userDetailsService;
+	
+	public SpringSecurityConfig(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
+	
+	@Bean 
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 	
 	@Bean
 	public PasswordEncoder passwordEncorder() {
@@ -42,21 +55,22 @@ public class SpringSecurityConfig {
 		return http.build();
 	}
 	
-	@Bean
-	public UserDetailsService userDetailsService() {
-		
-		UserDetails user = User.builder()
-				.username("lalit")
-				.password(passwordEncorder().encode("lalit123"))
-				.roles("USER")	
-				.build();
-		
-		UserDetails admin = User.builder()
-				.username("sagar")
-				.password(passwordEncorder().encode("sagar123"))
-				.roles("ADMIN")
-				.build();
-		
-		return new InMemoryUserDetailsManager(user, admin);
-	}
+	// Now we are loading users from database and performing authentications so there no need for inMemoryUserDetailsManager etc..
+//	@Bean
+//	public UserDetailsService userDetailsService() {
+//		
+//		UserDetails user = User.builder()
+//				.username("lalit")
+//				.password(passwordEncorder().encode("lalit123"))
+//				.roles("USER")	
+//				.build();
+//		
+//		UserDetails admin = User.builder()
+//				.username("sagar")
+//				.password(passwordEncorder().encode("sagar123"))
+//				.roles("ADMIN")
+//				.build();
+//		
+//		return new InMemoryUserDetailsManager(user, admin);
+//	}
 }
