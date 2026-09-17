@@ -347,3 +347,23 @@ Method Level Security
  ==============================================================================================
  
    
+ Add Entries in Database
+ ========================
+ 1. User table
+
+ INSERT INTO `users_db`.`users` (`id`, `email`, `name`, `password`, `username`) VALUES ('1', 'sagar@gmail.com', 'sagar', 'sagar123', 'sagar123');
+ INSERT INTO `users_db`.`users` (`id`, `email`, `name`, `password`, `username`) VALUES ('2', 'admin@gmail.com', 'admin', 'admin123', 'admin123');
+
+ 2. Roles Table
+ - Note: Spring security expect role with prefix [ ROLE_ ]
+ 
+ INSERT INTO `users_db`.`roles` (`id`, `name`) VALUES ('1', 'ROLE_USER');
+ INSERT INTO `users_db`.`roles` (`id`, `name`) VALUES ('2', 'ROLE_ADMIN');
+ 
+ 3. User_Roles table
+ 
+ INSERT INTO `users_db`.`users_roles` (`user_id`, `role_id`) VALUES ('1', '1');
+ INSERT INTO `users_db`.`users_roles` (`user_id`, `role_id`) VALUES ('2', '2');
+ INSERT INTO `users_db`.`users_roles` (`user_id`, `role_id`) VALUES ('2', '1');
+ 
+ 
