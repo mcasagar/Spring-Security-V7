@@ -435,4 +435,15 @@ Method Level Security
        response.getWriter().write(...)
        The generated JSON string is written into the HTTP response body.
  
+ Custom AccessDenied Exception
+ ===============================
+ - Important Configuration Point
+ - http.httpBasic(...)
+ - is configuring the HTTP Basic authentication mechanism and its AuthenticationEntryPoint.
+ 
+ - Whereas:
+ 
+ - http.exceptionHandling(...)
+ - is configuring Spring Security's exception-handling behavior, including the AccessDeniedHandler.
+ - So these two configurations are related, but they configure different parts of the exception-handling flow.
  
