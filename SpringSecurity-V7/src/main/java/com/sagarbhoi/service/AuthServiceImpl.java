@@ -3,12 +3,14 @@ package com.sagarbhoi.service;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sagarbhoi.dto.RegisterDto;
 import com.sagarbhoi.entity.Role;
 import com.sagarbhoi.entity.User;
+import com.sagarbhoi.exception.EmailAlreadyExistsException;
 import com.sagarbhoi.repository.RoleRepository;
 import com.sagarbhoi.repository.UserRepository;
 
@@ -28,6 +30,15 @@ public class AuthServiceImpl implements AuthService {
 	
 	@Override
 	public String register(RegisterDto registerDto) {
+		
+		if(userRepository.existsByUsername(registerDto.getUsername())) {
+			throw new UsernameNotFoundException("Username already exists.");
+		}
+		
+		if(userRepository.existsByEmail(registerDto.getEmail())) {
+			throw new EmailAlreadyExistsException("Email already exists.");
+		}
+		
 		User user = new User();
 		user.setName(registerDto.getName());
 		user.setUsername(registerDto.getUsername());

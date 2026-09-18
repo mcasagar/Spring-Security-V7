@@ -460,3 +460,11 @@ Method Level Security
  - HttpMethod.POST → applies only to POST requests.
  - "/api/auth/**" → matches all endpoints under /api/auth/.
  - .permitAll() → authentication is not required for these endpoints.
+ 
+ 
+ Exception Handling for Register API
+ ==================================
+  1) Check for username already exists or not ? if exists then throw UsernameNotFoundException (this is already available in spring security core package)
+  2) check for email already exists or not ? if exists then throw EmailAlreadyExistsException (this is custom exception created by our own) bcoz this not available in 
+       spring security library.
+  3) so here one thing is we are getting wrong exception called 401 Unauthorized if user is already exist. (so we have to correct out this and this by using global exception)
