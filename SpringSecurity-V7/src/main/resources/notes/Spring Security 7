@@ -391,5 +391,18 @@ Method Level Security
 	So below UserDetails loadedUser = this.getUserDetailsService().loadUserByUsername(username) this you will also see the one method called additionalAuthenticationChecks(); 
 	so it is an abstracts method again you can see the its implementatins is DaoAuthenticationProvider class so inside this class you can see the password matching logic.
  
+ Spring Security Exceptions
+ =========================
+ 	Now, Spring security doesn't handle every kind of exception in your applications. It mainly focuses on 
+ security-related exceptions not business logic or general runtime exceptions from your service or repository layers.
  
+ So ExceptionTranslationFilter class is responsible for handling the security related exceptions.
+ So inside this class you can see chain.doFilter() method in try block so in doFilter() method throw any 
+ exception related spring security so try block catches that exception and executes one method in catch block
+ handleSpringSecurityExceptino() so inside this method you can see there are if else block inside you will see two methods
+ if Authentication related exception occurs then if block executes and inside this block handleAuthenticationExcetpion() will be executes
+ if Authorization related exception occurs then else block executes and inside this block handleAccessDeniedException() will be executes
+ 
+ so if you inspects whole code so at the end you will see AuthenticationEntryPoin for AuthenticationException 
+ and AccessDeniedHandler for AccessDeniedException.
  
