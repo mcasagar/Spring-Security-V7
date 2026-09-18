@@ -447,3 +447,16 @@ Method Level Security
  - is configuring Spring Security's exception-handling behavior, including the AccessDeniedHandler.
  - So these two configurations are related, but they configure different parts of the exception-handling flow.
  
+ 
+ Building Register & Login API's
+ ==============================
+  - permitAll() and CSRF Configuration
+ - 1. requestMatchers(...).permitAll()
+ - .requestMatchers(HttpMethod.POST, "/api/auth/**")
+ - .permitAll()
+ - This configuration allows unauthenticated users to access the specified endpoints.
+
+   Meaning
+ - HttpMethod.POST → applies only to POST requests.
+ - "/api/auth/**" → matches all endpoints under /api/auth/.
+ - .permitAll() → authentication is not required for these endpoints.

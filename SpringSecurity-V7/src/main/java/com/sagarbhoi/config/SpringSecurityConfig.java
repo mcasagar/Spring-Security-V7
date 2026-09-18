@@ -45,12 +45,14 @@ public class SpringSecurityConfig {
 //					.requestMatchers(HttpMethod.GET, "/api/user").hasAnyRole("ADMIN", "USER")  // here both admin & user can access /user api
 //					.requestMatchers(HttpMethod.GET, "/api/admin").hasRole("ADMIN")					   // here only admin can access /admin api
 					.requestMatchers(HttpMethod.GET, "/api/welcome").permitAll()							  // here /welcome api can access anyone.
+					.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll() 							// any api starting with /api/auth can be publicly accessible.
 					.anyRequest().authenticated()																				     // other than above api, every request will check credentials
 				);	
 		
 		http.formLogin(form -> form.disable());	// disabled form base authentications
 		http.httpBasic(basicAuth -> basicAuth.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
 		http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler()));
+		http.csrf(csrf -> csrf.disable());
 		return http.build();
 	}
 	
