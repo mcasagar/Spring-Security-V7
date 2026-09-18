@@ -367,3 +367,29 @@ Method Level Security
  INSERT INTO `users_db`.`users_roles` (`user_id`, `role_id`) VALUES ('2', '1');
  
  
+ Deep Dive into Spring Security Authentication Internal Source Code
+ =======================================================
+	Search AuthenticationFilter class inside this you will see doFilter() method inside this method you can see the attemptAuthentication(request, response) method so just go inside this method and inside this method 
+	you can see authenticationConverter.convert(request) method which is basically responsible of converting http request into Authentication object. So if you want to see how convert method will convert request just 
+	go inside convert() method and there you can see that convert() method has different implimantations. So there you can see one impl class called BasicAuthenticationConverter so if you go inside this class you can
+	see the this method will extracs the credentials from the request and it construct the Authentication object Now if you go back to the AuthenticationFilter their you can see authenticationManager.authenticate(anthentication) ; 
+	method so if you go inside the authenticate() method you can see you can see this method has different implimentations there you will find one impl called ProviderManager class so just go inside ProviderManager   so it will
+	check which Provider we are using ….. so once spring security identifies its provder so it will called its authenticate() method. So here if you check you will see this authenticate() method has different implimantations classes
+	so there you will see one class called AbstractUserDetailsAuthenticationProvider which is comes from  org.springframework.security.authentication.dao package. So inside this class this authenticate() method  is responsible
+	for database authentications. So you can see this AbstractUserDetailsAuthenticationProvider this abstract class implemented by the DaoAuthenticationProvider class. So if you see authenticate() method inside 
+	AbstractUserDetailsAuthenticationProvider this class so this method first extract credentials, so it will first check this details inside cache [ getUserFromCache(username) ] if not available then it will retrieve user 
+	from the database. So here also you can see retrieveUser() method so just go inside retrieve user method which is abstract method so this have impl of DaoAuthenticationProvider class so this retriveUser() method
+	basically uses userDetailsService for load the users from the database.  So if you notice that we have created one custom user details service class which implimantes UserDetails services and its loadUserByUsername(username)
+	method. So by looking below code you clearly understand that spring security uses userDetails service provided loadUserByUsername(username) method to load the userdeatails from database 
+	UserDetails loadedUser = this.getUserDetailsService().loadUserByUsername(username);  so if you see this loadUserByUsername() method has impl classes like 
+
+	CustomUserDetailsService 	(our class)
+  	CachingUserDetailsService
+	InMemoryUserDetailsManager
+	JdbcDaoImpl
+
+	So below UserDetails loadedUser = this.getUserDetailsService().loadUserByUsername(username) this you will also see the one method called additionalAuthenticationChecks(); 
+	so it is an abstracts method again you can see the its implementatins is DaoAuthenticationProvider class so inside this class you can see the password matching logic.
+ 
+ 
+ 
