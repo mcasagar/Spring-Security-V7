@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.sagarbhoi.exception.CustomAuthenticationEntryPoint;
+
 @Configuration
 @EnableMethodSecurity
 public class SpringSecurityConfig {
@@ -51,7 +53,7 @@ public class SpringSecurityConfig {
 				);	
 		
 		http.formLogin(form -> form.disable());	// disabled form base authentications
-		http.httpBasic(withDefaults());
+		http.httpBasic(basicAuth -> basicAuth.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
 		return http.build();
 	}
 	

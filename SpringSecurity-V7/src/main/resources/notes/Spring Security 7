@@ -406,3 +406,33 @@ Method Level Security
  so if you inspects whole code so at the end you will see AuthenticationEntryPoin for AuthenticationException 
  and AccessDeniedHandler for AccessDeniedException.
  
+ 
+ Custom Authentication Exception 
+========================================
+ - We can create a custom AuthenticationEntryPoint to return our own error response instead of using the default Spring Security response.
+ 
+ - Create CustomAuthenticationEntryPoint class implements AuthenticationEntryPoint Interface.
+ 1. Created ErrorResponse class for storing error related object
+ 2. Created custom authentication entry point class inside set response object values
+ 3. response.getWriter()
+       .write(new ObjectMapper().writeValueAsString(errorResponse));
+       This code converts the errorResponse Java object into a JSON string and writes that JSON into the HTTP response body.
+       
+       response.getWriter()
+       response is an HttpServletResponse object.
+	   getWriter() returns a PrintWriter, which is used to write text data into the HTTP response body.
+	   
+	   ObjectMapper is a Jackson class:
+	   
+	   It is used for converting between:
+	   Java objects
+       JSON
+       JSON strings
+       
+       writeValueAsString(errorResponse)
+       This method serializes the Java object into a JSON string.
+       
+       response.getWriter().write(...)
+       The generated JSON string is written into the HTTP response body.
+ 
+ 
