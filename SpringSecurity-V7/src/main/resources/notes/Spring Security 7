@@ -468,3 +468,23 @@ Method Level Security
   2) check for email already exists or not ? if exists then throw EmailAlreadyExistsException (this is custom exception created by our own) bcoz this not available in 
        spring security library.
   3) so here one thing is we are getting wrong exception called 401 Unauthorized if user is already exist. (so we have to correct out this and this by using global exception)
+  
+  
+  Creating global exception handling class and prepare our own response
+  ============================================================
+  - Right now if you see we are seeing status code 401 which is not connect (if user already exist), then there status code must have (bad request)
+  - So in order to get proper status in the response, we should implement the Global Exception Handler.
+  
+  1. What is @RestControllerAdvice?
+		@RestControllerAdvice is used to handle exceptions globally across REST controllers.
+		Instead of writing exception-handling logic in every controller, we can define a centralized exception handler.
+		It combines @ControllerAdvice and @ResponseBody, so the returned object is written directly to the HTTP response body, usually as JSON.
+		@RestControllerAdvice
+		public class GlobalExceptionHandler {
+		
+		 }
+   2. @ExceptionHandler
+		@ExceptionHandler is used to define a method that handles a specific exception.
+		For example:
+		@ExceptionHandler(UsernameNotFoundException.class)
+		This tells Spring to invoke the associated handler method when a matching UsernameNotFoundException is raised during controller request processing.
