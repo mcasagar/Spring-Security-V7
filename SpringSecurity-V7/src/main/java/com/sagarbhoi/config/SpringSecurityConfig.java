@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.sagarbhoi.exception.CustomAccessDeniedHandler;
 import com.sagarbhoi.exception.CustomAuthenticationEntryPoint;
+import com.sagarbhoi.security.JwtAuthenticationEntryPoint;
 
 @Configuration
 @EnableMethodSecurity
@@ -50,7 +51,7 @@ public class SpringSecurityConfig {
 				);	
 		
 		http.formLogin(form -> form.disable());	// disabled form base authentications
-		http.httpBasic(basicAuth -> basicAuth.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
+		http.httpBasic(basicAuth -> basicAuth.authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 		http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler()));
 		http.csrf(csrf -> csrf.disable());
 		return http.build();

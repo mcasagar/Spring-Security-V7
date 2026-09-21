@@ -528,3 +528,24 @@ Login API
 	
 	Password Matching Logic
 	DaoAuthenticationProvider internally uses additionalAuthenticationChecks() method inside this you will see password matching logic. 
+	
+Json Web Token (JWT) Implementations
+================================
+- Step to implement JWT
+	
+	1. Adding JWT Maven Dependencies 
+	2. Add jwt properties in application.properties file
+	3. Create JwtAuthenticationEntryPoint
+	4. Create JwtTokenProvider
+	5. JwtAuthenticationFilter
+	6. Create JWTAuthResponse DTO
+	7. Configure JWT in Spring Security Configuration
+	8. Change Login/Signin API to return token to client.
+	
+	Adding jwt maven dependencies which are required for our project after that we are adding two properties in our application.properties file  so basically we need one secret key
+	and token expiration time which we have to configure in application.properties file after that creating JwtAuthenticaionEntryPoint class so this is responsible for handle unauthenticated 
+	exception after next create JwtTokenProvider well this is the utility class that contains JWT related utility methods for example generate the JWT token, extract the username from 
+	token and validate the token next step Creating JWTAuthenticationFilter class well this filter is responsible to validate JWT token which is there in the incoming Http Request also 
+	this class will provide the the user details to spring security for authenticating the user next create JWTAuthResponseDto class this class is responsible to hold generated jwt token
+	and return this token back to the client next step we are configuring the JWT in our spring security configuration class so after that we are changing our register and login api and return 
+	token to client
