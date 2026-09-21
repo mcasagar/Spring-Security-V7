@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sagarbhoi.dto.LoginDto;
 import com.sagarbhoi.dto.RegisterDto;
 import com.sagarbhoi.service.AuthService;
 
@@ -26,5 +27,12 @@ public class AuthController {
 	public ResponseEntity<String> register(@RequestBody RegisterDto registerDto){
 		  String message = authService.register(registerDto);
 		 return new ResponseEntity<>(message, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+		String message = authService.login(loginDto);
+		//return new ResponseEntity<>(message, HttpStatus.OK);
+		return ResponseEntity.ok(message);
 	}
 }

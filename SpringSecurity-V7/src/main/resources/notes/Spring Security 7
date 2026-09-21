@@ -488,3 +488,43 @@ Method Level Security
 		For example:
 		@ExceptionHandler(UsernameNotFoundException.class)
 		This tells Spring to invoke the associated handler method when a matching UsernameNotFoundException is raised during controller request processing.
+		
+		
+Login API
+====================================
+	new UsernamePasswordAuthenticationToken(
+	    loginDto.getUsernameOrEmail(),
+	    loginDto.getPassword()
+	)
+	
+	This creates an unauthenticated UsernamePasswordAuthenticationToken containing the user's submitted credentials.
+	loginDto.getUsernameOrEmail() → username or email entered by the user.
+	loginDto.getPassword() → password entered by the user.
+	
+	At this stage, the credentials are not yet verified.
+	
+	AuthenticationManager.authenticate()
+	authenticationManager.authenticate(authenticationToken);
+	The AuthenticationManager is responsible for authenticating the submitted credentials.
+	In a typical Spring Security setup, ProviderManager is the implementation of AuthenticationManager.
+	ProviderManager checks which configured AuthenticationProvider supports the given authentication token and delegates authentication to it.
+	
+	AuthenticationProvider — Credential Verification
+	For username/password authentication, a common provider is:
+	DaoAuthenticationProvider
+	It uses UserDetailsService to load the user details and PasswordEncoder to verify the submitted password against the stored password.
+	If authentication succeeds, the AuthenticationManager returns a fully authenticated Authentication object containing the authenticated principal and granted authorities.
+	
+	SecurityContextHolder.getContext()
+    .setAuthentication(authentication);
+
+	After successful authentication, this code stores the returned Authentication object in the current SecurityContext.
+	SecurityContextHolder → provides access to the current security context.
+	getContext() → retrieves the current SecurityContext.
+	setAuthentication(authentication) → stores the authenticated user's identity and authorities in that context.	
+	Spring Security can then use this Authentication object to identify the user and perform authorization checks.
+	
+	Note: In the default setup, SecurityContextHolder uses a ThreadLocal strategy. In a stateless JWT application, explicitly setting the context here does not, by itself, make the authentication persist across future requests.
+	
+	Password Matching Logic
+	DaoAuthenticationProvider internally uses additionalAuthenticationChecks() method inside this you will see password matching logic. 
