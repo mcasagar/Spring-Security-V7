@@ -549,3 +549,47 @@ Json Web Token (JWT) Implementations
 	this class will provide the the user details to spring security for authenticating the user next create JWTAuthResponseDto class this class is responsible to hold generated jwt token
 	and return this token back to the client next step we are configuring the JWT in our spring security configuration class so after that we are changing our register and login api and return 
 	token to client
+	
+	JWT Token Provider class
+	=======================
+	JwtTokenProvider class
+	This is our custom class so within this class we are going to creating couple of utility methods like generating jwt token, extracting the username from jwt token, validate the token etc
+ 	
+ 	// create generate token utility method
+
+	So here in order to generate the token we need username as subject so we can get username from Authentication object  
+	String username = authentication.getName();
+	After that we need current date and expiration date using Date object 
+	Date currentDate = new Date()
+	Date expireDate = new Date(currentDate.getTime() + jwtExpirationMilliseconds())
+	After that we are going to create JWT token so in order to create JWT token we can use utilities class that is JWTS from (io.jsonwebtoken) package  so this has builder() method which returns JwtBuilder 
+	so just called builder() method next we need to create jwt token using username so just called subject() mehod and set the username 
+	.subject(username)
+	After that we are setting the token issue time
+	.issueAt(new Date())
+	After that we are setting the token expiration time that means when token should be expire
+	.expiration(expireDate)
+	So you will notice that here this two methods requires object of Date class that’s why we are created date class object for current date and expire date
+	So after that we need to sign this token using secret key so we already defined secrete key in our properties file so  but if you notice in properties file, the secret key is in a encrypted format so first we need to decode this key and then set this key in a token 
+	So in order to set this key we have to use below method
+	.signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode()))
+	Keys this is utilities class comes from the (io.jsonwebtoken.security) and its has hmacShaKeyFor() method this method returns SecretKey after that we have to decode this key using Decoders class and then pass to this method and after this call compact() method to generate the key
+	.compact()
+	So the thing is whenever we are extracting the username from jwt token that time we are going to use same secret key and when we are validating the token that time also we are using same secret key so for that we will create seprate method which will return the Key
+ 	After that we are creating method for get username from the token 
+	Public String getUsernameFromToken(String token) 
+	After that we are calling Jwts utitlity class which is from (io.jsonwebtoken) 
+	It has parser method which will parse the token so then we are verify token by secret key for that we are calling verfiyWith( (SecretKey) key())
+	After we are calling the .build() method to build the jwt parser and then we can pass the token by using  pareseSigneClaims(token) 
+	Next we need to get the payload using which we can get the subject which gives us username   
+
+	So next we are creating the one utility method that will validate the token
+	So same we are following the steps 
+	Jwts.parser
+	After verify token
+	verifyWith((SecretKey) key())
+	.build() //then build the jwt token
+	Then use parse method to validate/parse the token 
+	.parse(token) 
+	If the token in not valid then parse method throws the exception internally so here we no need to use the try catch here. After that just return true 
+	
