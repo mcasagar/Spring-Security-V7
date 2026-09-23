@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		String bearerToken = request.getHeader("Authorization");
 		 //use util class to remove bearer word
 		//fist checks text must have. Second check this string starts with "bearer " name
-		if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("bearer ")) {
+		if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
 			//remove bearer word
 			return bearerToken.substring(7, bearerToken.length()); 
 		}

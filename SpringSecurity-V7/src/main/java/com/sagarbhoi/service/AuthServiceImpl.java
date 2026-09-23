@@ -18,6 +18,7 @@ import com.sagarbhoi.entity.User;
 import com.sagarbhoi.exception.EmailAlreadyExistsException;
 import com.sagarbhoi.repository.RoleRepository;
 import com.sagarbhoi.repository.UserRepository;
+import com.sagarbhoi.security.JwtTokenProvider;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -26,14 +27,16 @@ public class AuthServiceImpl implements AuthService {
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
 	private AuthenticationManager authenticationManager;
+	private JwtTokenProvider jwtTokenProvider;
 	
 	//constructor injection
 	public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncorder,
-											 AuthenticationManager authenticationManager) {
+											 AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncorder = passwordEncorder;
 		this.authenticationManager = authenticationManager;
+		this.jwtTokenProvider = jwtTokenProvider;
 	}
 	
 	@Override
@@ -75,7 +78,10 @@ public class AuthServiceImpl implements AuthService {
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
-		return "User logged-in successfully";
+		//Generate token
+		String token = jwtTokenProvider.generateToken(authentication);
+		
+		return token;
 	}
 
 }

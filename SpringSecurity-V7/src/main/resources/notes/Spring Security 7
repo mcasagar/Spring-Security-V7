@@ -677,3 +677,8 @@ Json Web Token (JWT) Implementations
     	session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	);
 	This configures Spring Security not to create or use an HTTP session to persist the security context between requests.
+	
+ 	Step 6: Modify Login API - jwt Impl
+ 	===========================
+ 	- Create JwtAuthResponseDto
+ 	- Modify login method 
