@@ -11,19 +11,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.sagarbhoi.exception.CustomAccessDeniedHandler;
 import com.sagarbhoi.exception.CustomAuthenticationEntryPoint;
 import com.sagarbhoi.security.JwtAuthenticationEntryPoint;
+import com.sagarbhoi.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
 public class SpringSecurityConfig {
 	
 	private UserDetailsService userDetailsService;
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
-	public SpringSecurityConfig(UserDetailsService userDetailsService) {
+	
+	public SpringSecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
 		this.userDetailsService = userDetailsService;
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 	}
 	
 	@Bean 
@@ -52,6 +57,7 @@ public class SpringSecurityConfig {
 		
 		http.formLogin(form -> form.disable());	// disabled form base authentications
 		http.httpBasic(basicAuth -> basicAuth.authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		http.exceptionHandling(exception -> exception.accessDeniedHandler(new CustomAccessDeniedHandler()));
 		http.csrf(csrf -> csrf.disable());
 		return http.build();

@@ -593,3 +593,87 @@ Json Web Token (JWT) Implementations
 	.parse(token) 
 	If the token in not valid then parse method throws the exception internally so here we no need to use the try catch here. After that just return true 
 	
+	Step 5: JwtAuthenticationFilter
+	==============================
+	- JwtAuthenticationFilter is responsible for extracting and validating the JWT from incoming HTTP requests and establishing the user's authentication in Spring Security.
+	- It extends OncePerRequestFilter, which is designed to execute the filter once per request within a single request dispatch.
+	
+	- doFilterInternal() contains the main JWT authentication logic.
+    - It checks whether the incoming request contains a JWT. If a valid token is present, it establishes authentication in the SecurityContext.
+    
+    4. Extract JWT from the Request
+	String token = getTokenFromRequest(request);
+	This calls our custom getTokenFromRequest() method to extract the JWT from the HTTP request's Authorization header.
+	The client typically sends the token in this format:
+	Authorization: Bearer <JWT_TOKEN>
+	
+	Internal Working
+	---------------------------
+
+	Step 1:
+	request.getHeader("Authorization");
+	Retrieves the Authorization header from the incoming HTTP request.
+	
+	Step 2:
+	StringUtils.hasText(bearerToken)
+	Checks whether the header contains non-whitespace text.
+	
+	Step 3:
+	bearerToken.startsWith("Bearer ")
+	Checks whether the header starts with the Bearer prefix.
+
+	Step 4:
+	bearerToken.substring(7);
+	Removes the first 7 characters (Bearer ) and returns the remaining JWT string.
+
+	Step 5:
+	return null;
+	If the header is missing or does not contain the expected Bearer prefix, the method returns null.
+	Note: The standard prefix is Bearer with a capital B. The startsWith() method is case-sensitive, so use "Bearer " instead of "bearer " in your code.
+
+	filterChain.doFilter(request, response);
+	--------------------------------------------------------
+	After processing the JWT, we call filterChain.doFilter() to pass the request and response to the next filter in the chain.
+	This call is required whether the request contains a JWT or not.
+	For example, login and registration endpoints may be accessed without an existing JWT.
+	If no JWT is present, this filter does not establish authentication; the request continues through the remaining filter chain. Later authorization rules determine whether the request is allowed.
+	Important: filterChain.doFilter() does not itself authenticate the user or make an endpoint public. It simply continues request processing.
+	
+	Goal
+	---------
+	The main purpose of JwtAuthenticationFilter is to establish the user's authentication from a valid JWT so that Spring Security can perform authorization checks for the incoming request.
+	
+	http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+	---------------------------------------------------------------------------------------------------------------------------------------
+	- Purpose: Adds the custom JwtAuthenticationFilter to Spring Security's filter chain and places it before UsernamePasswordAuthenticationFilter.
+
+	- How it works
+		addFilterBefore() registers a custom filter before a specified filter in the Spring Security filter chain.
+		jwtAuthenticationFilter is the custom filter instance that extracts and validates the JWT from the incoming request.
+		UsernamePasswordAuthenticationFilter.class specifies the reference filter whose position determines where the JWT filter is placed.
+		.class is Java's class literal syntax, which passes the Class object for UsernamePasswordAuthenticationFilter.
+		
+	- Request flow
+	  -------------------
+	Incoming HTTP Request
+    	    ↓
+	JwtAuthenticationFilter
+        	↓
+	Extract and validate JWT
+        	↓
+	Set Authentication in SecurityContext
+    	    ↓
+	UsernamePasswordAuthenticationFilter
+        	↓
+	Remaining Security Filters
+    	    ↓
+	Authorization → Controller
+
+	If the JWT is valid, the JWT filter sets the authenticated user in the SecurityContext. Later security components can use that authentication when applying authorization rules.
+	Important: addFilterBefore() does not disable or replace UsernamePasswordAuthenticationFilter. It only establishes the relative order of the custom filter and the reference filter.
+	For a JWT-based stateless API, the security configuration commonly also includes:
+
+	http.sessionManagement(session ->
+    	session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	);
+	This configures Spring Security not to create or use an HTTP session to persist the security context between requests.
